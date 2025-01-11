@@ -1,14 +1,12 @@
 package gr.uom.RideOrCry.services;
 
-import gr.uom.RideOrCry.entities.Car;
-import gr.uom.RideOrCry.entities.Agency;
-import gr.uom.RideOrCry.repositories.CarRepository;
-import gr.uom.RideOrCry.repositories.AgencyRepository;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import gr.uom.RideOrCry.entities.Agency;
+import gr.uom.RideOrCry.repositories.AgencyRepository;
 
 @Service
 public class AgencyService {
@@ -20,7 +18,7 @@ public class AgencyService {
         this.agencyRepository = agencyRepository;
     }
 
-    // Μέθοδος προσθήκης agent στην βάση
+    // Μέθοδος προσθήκης agent στην βάση 
     public Agency addAgent(Agency agent) {
         return agencyRepository.save(agent);
     }

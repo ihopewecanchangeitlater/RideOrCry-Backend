@@ -11,6 +11,6 @@ import gr.uom.RideOrCry.entities.Car;
 
 @Repository
 public interface CarRepository extends JpaRepository<Car, Long> {
-    // Εύρεση των αμαξιών της αντιπροσωπείας
+    // Εύρεση των αμαξιών της αντιπροσωπείας 
 	List<Car> findByAgency(Agency agency);
 }

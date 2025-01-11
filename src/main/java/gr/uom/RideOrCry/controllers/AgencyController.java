@@ -1,20 +1,25 @@
 package gr.uom.RideOrCry.controllers;
 
-import gr.uom.RideOrCry.entities.Agency;
-import gr.uom.RideOrCry.entities.Car;
-import gr.uom.RideOrCry.services.AgencyService;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import gr.uom.RideOrCry.entities.Agency;
+import gr.uom.RideOrCry.services.AgencyService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/agency")
 public class AgencyController {
 
+    // AgencyService
     private final AgencyService agencyService;
     
-
     public AgencyController(AgencyService agencyService) {
         this.agencyService = agencyService;
     }

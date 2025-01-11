@@ -1,7 +1,7 @@
 package gr.uom.RideOrCry.entities;
 
-import jakarta.persistence.*;
-import java.util.List;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
 @Entity
 public class Agency {
