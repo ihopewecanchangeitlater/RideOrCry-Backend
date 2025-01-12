@@ -47,25 +47,16 @@ public class CarService {
     }
 
     // Μέθοδος που ενημερώνει το αμάξι (με βάση το id του) στην βάση
-    public Car updateCar(Long carId, Car updatedCar) throws Exception {
-        Car existingCar = carRepository.findById(carId)
-                .orElseThrow(() -> new Exception("Car not found with ID: " + carId));
-        
-        // Ενημέρωση των πεδίων του υπάρχοντος αυτοκινήτου
-        // Εδώ ΠΡΕΠΕΙ να έχει λάβει όλα τα πεδία (στο frontend) και να τα στέλνει ΟΛΑ στη βάση
-        // Αν εισάγουμε μόνο το id και ένα πεδίο, θα μηδενήσει όλα τα άλλα (εκτός του agent)
-        existingCar.setBrand(updatedCar.getBrand());
-        existingCar.setModel(updatedCar.getModel());
-        existingCar.setFuelType(updatedCar.getFuelType());
-        existingCar.setEngine(updatedCar.getEngine());
-        existingCar.setSeats(updatedCar.getSeats());
-        existingCar.setPrice(updatedCar.getPrice());
-        existingCar.setAdditionalInfo(updatedCar.getAdditionalInfo());
-        existingCar.setQuantity(updatedCar.getQuantity());
+   	public Car updateCarQuantity(Long carId, int quantity) throws Exception {
+    	    Car existingCar = carRepository.findById(carId)
+    	            .orElseThrow(() -> new Exception("Car not found with ID: " + carId));
 
-        // Αποθήκευση αλλαγών
-        return carRepository.save(existingCar);
-    }
+    	    // Ενημέρωση μόνο του quantity
+    	    existingCar.setQuantity(quantity);
+
+    	    // Αποθήκευση αλλαγών
+    	    return carRepository.save(existingCar);
+   	}
     
     // Μέθοδος που λαμβάνει την λίστα όλων των αμαξιών της βάσης
     public List<Car> getAllCars() {

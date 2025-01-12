@@ -39,9 +39,9 @@ public class CarController {
 
     // Ενημερώνει το αμάξι με το συγκεκριμένο id.
     // ΔΕΝ ΕΝΗΜΕΡΩΝΕΙ ΟΛΑ ΤΑ ΠΕΔΙΑ. ΑΝ ΑΛΛΑΞΕΙΣ ΕΝΑ ΠΕΔΙΟ ΤΟΤΕ ΤΑ ΑΛΛΑ ΓΙΝΟΝΤΑΙ ΚΕΝΑ.
-    @PutMapping(path = "/update/{carId}")
-    public Car updateCar(@PathVariable Long carId, @RequestBody Car updatedCar) throws Exception {
-        return carService.updateCar(carId, updatedCar);
+    @PatchMapping(path = "/updateQuantity/{carId}")
+    public Car updateCarQuantity(@PathVariable Long carId, @RequestBody int quantity) throws Exception {
+        return carService.updateCarQuantity(carId, quantity);
     }
     
     // Εμφανίζει μια λίστα με όλα τα αμάξια
