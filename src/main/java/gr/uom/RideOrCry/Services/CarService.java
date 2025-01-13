@@ -1,6 +1,7 @@
 package gr.uom.RideOrCry.Services;
 
 import gr.uom.RideOrCry.Models.Car;
+import gr.uom.RideOrCry.Models.Reservation;
 import gr.uom.RideOrCry.Repositories.CarRepository;
 import gr.uom.RideOrCry.Specifications.CarSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ public class CarService {
 
     @Autowired
     private CarRepository carRepository;
+    @Autowired
+    private ReservationService reservationService;
 
     public boolean isAvailable(Car car) {
         return car.hasStock();
@@ -30,6 +33,13 @@ public class CarService {
             spec = spec.and(CarSpecification.filterBy(filter.getKey(), filter.getValue()));
         }
         return carRepository.findAll(spec);
+    }
+
+    public Reservation bookCar(int carId, String ssn, Date date, Time time) {
+        Optional<Car> optionalCar = carRepository.findById(carId);
+        Car car = optionalCar.orElse(null);
+        if (Objects.isNull(car)) return null;
+        return reservationService.createReservation(car, ssn, date, time);
     }
 
     public Car buyCar(int carId) {

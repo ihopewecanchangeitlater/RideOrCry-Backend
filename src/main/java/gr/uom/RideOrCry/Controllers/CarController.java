@@ -1,6 +1,7 @@
 package gr.uom.RideOrCry.Controllers;
 
 import gr.uom.RideOrCry.Models.Car;
+import gr.uom.RideOrCry.Models.Reservation;
 import gr.uom.RideOrCry.Services.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,16 @@ public class CarController {
         try {
             List<Car> cars = carService.searchCar(filters);
             return ResponseEntity.ok(cars);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return ResponseEntity.internalServerError().build();
+    }
+
+    @PatchMapping("/book/{id}")
+    public ResponseEntity<Reservation> bookCar(@PathVariable("id") int carId, @RequestBody Map<String, String> body) {
+        try {
+            return ResponseEntity.ok(carService.bookCar(carId, body.get("ssn"), Date.valueOf(body.get("date")), Time.valueOf(body.get("time"))));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
