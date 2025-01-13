@@ -19,8 +19,10 @@ public class CarService {
 
     @Autowired
     private CarRepository carRepository;
-    @Autowired
 
+    public boolean isAvailable(Car car) {
+        return car.hasStock();
+    }
 
     public List<Car> searchCar(Map<String, String> filters) {
         Specification<Car> spec = Specification.where(null);
@@ -28,5 +30,20 @@ public class CarService {
             spec = spec.and(CarSpecification.filterBy(filter.getKey(), filter.getValue()));
         }
         return carRepository.findAll(spec);
+    }
+
+    public Car buyCar(int carId) {
+        Optional<Car> optionalCar = carRepository.findById(carId);
+        if (optionalCar.isEmpty()) return null;
+        Car car = optionalCar.get();
+        if (!car.hasStock()) return null;
+        try {
+            car.buy();
+            carRepository.saveAndFlush(car);
+            return car;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 }

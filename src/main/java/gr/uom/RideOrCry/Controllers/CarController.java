@@ -28,4 +28,14 @@ public class CarController {
         }
         return ResponseEntity.internalServerError().build();
     }
+
+    @PatchMapping("/buy/{id}")
+    public ResponseEntity<Car> buyCar(@PathVariable("id") int carId) {
+        try {
+            return ResponseEntity.ok(carService.buyCar(carId));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return ResponseEntity.internalServerError().build();
+    }
 }
