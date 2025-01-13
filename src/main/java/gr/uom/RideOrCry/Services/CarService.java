@@ -23,10 +23,6 @@ public class CarService {
     @Autowired
     private ReservationService reservationService;
 
-    public boolean isAvailable(Car car) {
-        return car.hasStock();
-    }
-
     public List<Car> searchCar(Map<String, String> filters) {
         Specification<Car> spec = Specification.where(null);
         for (Map.Entry<String, String> filter : filters.entrySet()) {
