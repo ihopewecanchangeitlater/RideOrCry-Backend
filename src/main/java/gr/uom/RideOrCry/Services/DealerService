@@ -1,0 +1,65 @@
+package gr.uom.RideOrCry.Services;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import gr.uom.RideOrCry.Model.Dealer;
+import gr.uom.RideOrCry.Repositories.DealerRepository;
+
+@Service
+public class DealerService {
+
+    @Autowired
+    private DealerRepository dr;
+
+    public List<Dealer> getAllDealers() {
+        return dr.findAll();
+    }
+
+    public String dealerLogin(Dealer d) {
+        Optional<Dealer> dealerOpt = Optional.ofNullable(dr.findByEmail(d.getEmail()));
+
+        if (!dealerOpt.isPresent()) {
+            return "Error: User not found.";
+        }
+
+        Dealer dealer = dealerOpt.get();
+        if (!dealer.getPassword().equals(d.getPassword())) {
+            return "Error: Incorrect password.";
+        }
+        return "Success: Login successful!";
+    }
+
+    public String dealerSignUp(Dealer d) {
+        Optional<Dealer> existingDealer = Optional.ofNullable(dr.findByEmail(d.getEmail()));
+        if (existingDealer.isPresent()) {
+            return "Error: User already exists.";
+        }
+
+        if (!CustomValidation.isValidEmail(d.getEmail())) {  
+            return "Error: Invalid email format.";
+        }
+
+        if (!CustomValidation.isValidAfm(d.getAfm())) {  
+            return "Error: AFM must be exactly 9 digits.";
+        }
+
+        if (d.getName() == null || d.getName().isEmpty()) {
+            return "Error: Name is required.";
+        }
+
+        if (d.getOwner() == null || d.getOwner().isEmpty()) {
+            return "Error: Owner is required.";
+        }
+
+        if (d.getPassword().length() < 6) {
+            return "Error: Password must be at least 6 characters long.";
+        }
+
+        dr.save(d);
+        return "Success: Welcome!";
+    }
+}
