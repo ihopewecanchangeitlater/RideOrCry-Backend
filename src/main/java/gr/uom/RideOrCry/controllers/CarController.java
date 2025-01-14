@@ -6,6 +6,7 @@ import gr.uom.RideOrCry.entities.Car;
 import gr.uom.RideOrCry.services.CarService;
 
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -38,9 +39,10 @@ public class CarController {
     }
 
     // Ενημερώνει το αμάξι με το συγκεκριμένο id.
-    // ΔΕΝ ΕΝΗΜΕΡΩΝΕΙ ΟΛΑ ΤΑ ΠΕΔΙΑ. ΑΝ ΑΛΛΑΞΕΙΣ ΕΝΑ ΠΕΔΙΟ ΤΟΤΕ ΤΑ ΑΛΛΑ ΓΙΝΟΝΤΑΙ ΚΕΝΑ.
+    
     @PatchMapping(path = "/updateQuantity/{carId}")
-    public Car updateCarQuantity(@PathVariable Long carId, @RequestBody int quantity) throws Exception {
+    public Car updateCarQuantity(@PathVariable Long carId, @RequestBody Map<String, Integer> requestBody) throws Exception {
+        int quantity = requestBody.get("quantity"); // Λήψη της τιμής από το JSON αντικείμενο
         return carService.updateCarQuantity(carId, quantity);
     }
     
