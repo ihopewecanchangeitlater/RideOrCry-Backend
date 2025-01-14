@@ -1,0 +1,10 @@
+package gr.uom.RideOrCry.Repositories;
+
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import gr.uom.RideOrCry.Model.Dealer;
+
+public interface DealerRepository extends JpaRepository<Dealer,Integer> {
+	Dealer findByEmail(String email);
+}
