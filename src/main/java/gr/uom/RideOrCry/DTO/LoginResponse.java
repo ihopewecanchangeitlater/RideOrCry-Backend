@@ -1,4 +1,4 @@
-package gr.uom.RideOrCry.dto;
+package gr.uom.RideOrCry.DTO;
 
 
 public class LoginResponse {

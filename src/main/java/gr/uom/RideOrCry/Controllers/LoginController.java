@@ -1,17 +1,16 @@
 package gr.uom.RideOrCry.Controllers;
 
+import gr.uom.RideOrCry.DTO.LoginResponse;
+import gr.uom.RideOrCry.Entities.Agency;
+import gr.uom.RideOrCry.Entities.Citizen;
+import gr.uom.RideOrCry.Services.AgencyService;
+import gr.uom.RideOrCry.Services.CitizenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import gr.uom.RideOrCry.Services.AgencyService;
-import gr.uom.RideOrCry.Services.CitizenService;
-import gr.uom.RideOrCry.dto.LoginResponse;
-import gr.uom.RideOrCry.entities.Agency;
-import gr.uom.RideOrCry.entities.Citizen;
 
 @RestController
 @RequestMapping("/api/auth")

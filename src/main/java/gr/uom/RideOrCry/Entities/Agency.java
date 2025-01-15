@@ -1,15 +1,9 @@
-package gr.uom.RideOrCry.entities;
+package gr.uom.RideOrCry.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 @Entity
 public class Agency {
@@ -18,7 +12,7 @@ public class Agency {
     @NotNull(message = "AFM is required.")
     @Min(value = 0, message = "VAT must be at least 0")
     @Max(value = 999999999, message = "VAT must have at most 9 digits")
-    private Integer afm;
+    private Long afm;
 
     @NotBlank(message = "Name is required.")
     @Size(min = 2, max = 50, message = "Name must be between 2 and 50 characters.")
@@ -26,77 +20,75 @@ public class Agency {
 
     @NotBlank(message = "Owner name is required.")
     @Size(max = 255, message = "Company name must be less than 255 characters")
-    private String owner; 
-    
+    private String owner;
+
     @Email(message = "Invalid email format")
     @NotBlank(message = "Email is required")
     private String email;
-    
+
     @NotBlank(message = "Password is required.")
     @Size(min = 6, max = 20, message = "Password must be at least 6 characters long.")
     private String password;
-        
+
     @JsonIgnore
     private boolean isAgent = true;
-    
+
     public Agency() {
-    	
     }
-    
-    public Agency(Integer afm, String name, String owner, String email, String password) { 
-    	this.afm = afm;
+
+    public Agency(Long afm, String name, String owner, String email, String password) {
+        this.afm = afm;
         this.name = name;
-        this.owner = owner; 
-        this.email=email;
+        this.owner = owner;
+        this.email = email;
         this.password = password;
     }
-    
-    public Integer getAfm() {
-    	return afm; 
+
+    public Long getAfm() {
+        return afm;
     }
-    
-    public void setAfm(Integer afm) {
-		this.afm = afm;
-	}
-    
+
+    public void setAfm(Long afm) {
+        this.afm = afm;
+    }
+
     public String getName() {
-    	return name; 
+        return name;
     }
-    
+
     public void setName(String name) {
-		this.name = name;
-	}
-       
+        this.name = name;
+    }
+
     public String getOwner() {
-		return owner;
-	}
+        return owner;
+    }
 
-	public void setOwner(String owner) {
-		this.owner = owner;
-	}
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}  
-	
-    public boolean isAgent() {
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public boolean getIsAgent() {
         return isAgent;
     }
 
-    public void setAgent(boolean agent) {
+    public void setIsAgent(boolean agent) {
         isAgent = agent;
     }
-    
 }

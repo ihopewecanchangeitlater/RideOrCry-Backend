@@ -1,13 +1,8 @@
-package gr.uom.RideOrCry.entities;
+package gr.uom.RideOrCry.Entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 @Entity
 public class Citizen {
@@ -16,7 +11,7 @@ public class Citizen {
     @NotNull(message = "AFM is required.")
     @Min(value = 0, message = "VAT must be at least 0")
     @Max(value = 999999999, message = "VAT must have at most 9 digits")
-	private Integer afm;
+    private Integer afm;
 
     @NotBlank(message = "Name is required")
     private String name;
@@ -29,14 +24,14 @@ public class Citizen {
     private String email;
 
     @NotBlank(message = "Password is required")
-    @Size(min = 6, max = 20, message = "Password must be between 6 and 20 characters")  
+    @Size(min = 6, max = 20, message = "Password must be between 6 and 20 characters")
     private String password;
 
 
     private Boolean isAgent = false;
-    
+
     public Citizen() {
-     }
+    }
 
     // Ο κατασκευαστής με παραμέτρους για την καταχώρηση των πεδίων
     public Citizen(Integer afm, String name, String surname, String email, String password, Boolean isAgent) {
@@ -68,31 +63,31 @@ public class Citizen {
         return password;
     }
 
-	public void setAfm(Integer afm) {
-		this.afm = afm;
-	}
+    public void setAfm(Integer afm) {
+        this.afm = afm;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setSurname(String surname) {
-		this.surname = surname;
-	}
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
-	public boolean isAgent() {
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public boolean isAgent() {
         return isAgent;
     }
 
-    public void setAgent(boolean agent) {
+    public void setIsAgent(boolean agent) {
         isAgent = agent;
     }
 

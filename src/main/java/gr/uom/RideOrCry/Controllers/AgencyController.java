@@ -1,30 +1,31 @@
 package gr.uom.RideOrCry.Controllers;
 
-import gr.uom.RideOrCry.entities.Agency;
+
+import gr.uom.RideOrCry.Entities.Agency;
 import gr.uom.RideOrCry.Services.AgencyService;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import jakarta.validation.Valid;
-
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
-@RequestMapping("/api/agencies")
+@RequestMapping("/agency")
 public class AgencyController {
 
-    @Autowired
-    private AgencyService agencyService;
+    private final AgencyService agencyService;
 
-    @PostMapping("/register")
-    public ResponseEntity<Agency> registerAgency(@Valid @RequestBody Agency agency) {
-        Agency registeredAgency = agencyService.registerAgency(agency);
-        return ResponseEntity.ok(registeredAgency);
+
+    public AgencyController(AgencyService agencyService) {
+        this.agencyService = agencyService;
     }
-    
- // Endpoint για την εμφάνιση όλων των agents
+
+    // Endpoint για την προσθήκη νέου agent
+    @PostMapping(path = "/addagent")
+    public Agency addAgent(@RequestBody Agency agent) throws Exception {
+        return agencyService.addAgent(agent);
+    }
+
+    // Endpoint για την εμφάνιση όλων των agents
     @GetMapping(path = "/agentlist")
     public List<Agency> getAgents() throws Exception {
         return agencyService.getAgencies();
