@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CitizenService {
@@ -30,5 +31,10 @@ public class CitizenService {
 
     public Citizen findByEmailAndPassword(String email, String password) {
         return citizenRepository.findByEmailAndPassword(email, password);
+    }
+
+    public Citizen getCitizen(Long ssn) {
+        Optional<Citizen> citizen = citizenRepository.findById(ssn);
+        return citizen.orElse(null);
     }
 }

@@ -7,26 +7,37 @@ public class Car {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // ίσως αυτό να το κάναμε String και ονομασία να ήταν πινακίδα;
+    private long id; // ίσως αυτό να το κάναμε String και ονομασία να ήταν πινακίδα;
 
     private String brand;
     private String model;
-    private String fuelType;
+    private String fuel;
     private String engine;
     private int seats;
     private double price;
-
+    private int quantity;
     @Column(length = 1000)
     private String additionalInfo;
-
-    private int quantity;
-
     // Σχέση πολλά αμάξια σε έναν agent
     @ManyToOne
     @JoinColumn(name = "agency_id")
     private Agency agency;
 
-    // Getters and Setters
+    public Car() {
+    }
+
+    public Car(long id, String brand, String model, String fuel, String engine, int seats, double price, int quantity, String additionalInfo, Agency agency) {
+        this.id = id;
+        this.brand = brand;
+        this.model = model;
+        this.fuel = fuel;
+        this.engine = engine;
+        this.seats = seats;
+        this.price = price;
+        this.quantity = quantity;
+        this.additionalInfo = additionalInfo;
+        this.agency = agency;
+    }
 
     public Long getId() {
         return id;
@@ -52,12 +63,12 @@ public class Car {
         this.model = model;
     }
 
-    public String getFuelType() {
-        return fuelType;
+    public String getFuel() {
+        return fuel;
     }
 
-    public void setFuelType(String fuelType) {
-        this.fuelType = fuelType;
+    public void setFuel(String fuel) {
+        this.fuel = fuel;
     }
 
     public String getEngine() {
@@ -108,5 +119,15 @@ public class Car {
         this.agency = agency;
     }
 
+    public boolean hasStock() {
+        return this.quantity > 0;
+    }
 
+    public void buy() {
+        this.quantity--;
+    }
+
+    public boolean isStockGT(int size) {
+        return this.quantity > size;
+    }
 }

@@ -1,29 +1,24 @@
 package gr.uom.RideOrCry.Controllers;
 
 import gr.uom.RideOrCry.Entities.Car;
+import gr.uom.RideOrCry.Entities.Reservation;
 import gr.uom.RideOrCry.Services.CarService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 import java.util.Map;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
-@RequestMapping("/cars")
+@RequestMapping("cars")
 public class CarController {
 
-    // Carservice
-    private final CarService carService;
-
-    public CarController(CarService carService) {
-        this.carService = carService;
-    }
-
-    // Endpoint που προσθέτει ένα αμάξι. Το αμάξι το προσθέτει στον αντιπρόσωπο (θέλει ως εισαγωγή το agencyName)
-    @PostMapping(path = "/addcar/{agencyName}")
-    public Car addCar(@RequestBody Car car, @PathVariable String agencyName) throws Exception {
-        return carService.addCar(car, agencyName);
-    }
+    @Autowired
+    private CarService carService;
 
     // Endpoint που εμφανίζει τα αμάξια του αντιπρόσωπου (θέλει ως εισαγωγή το agencyName)
     @GetMapping(path = "/byagency/{agencyName}")
@@ -37,17 +32,53 @@ public class CarController {
         return carService.getCarById(carId);
     }
 
-    // Ενημερώνει το αμάξι με το συγκεκριμένο id.
+    // Εμφανίζει μια λίστα με όλα τα αμάξια
+    @GetMapping(path = "/carlist")
+    public List<Car> getAllCars() throws Exception {
+        return carService.getAllCars();
+    }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<Car>> searchCar(@RequestParam Map<String, String> filters) {
+        try {
+            List<Car> cars = carService.searchCar(filters);
+            return ResponseEntity.ok(cars);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return ResponseEntity.internalServerError().build();
+    }
+
+    // Endpoint που προσθέτει ένα αμάξι. Το αμάξι το προσθέτει στον αντιπρόσωπο (θέλει ως εισαγωγή το agencyName)
+    @PostMapping(path = "/addcar/{agencyName}")
+    public Car addCar(@RequestBody Car car, @PathVariable String agencyName) throws Exception {
+        return carService.addCar(car, agencyName);
+    }
+
+    // Ενημερώνει το αμάξι με το συγκεκριμένο id.
     @PatchMapping(path = "/updateQuantity/{carId}")
     public Car updateCarQuantity(@PathVariable Long carId, @RequestBody Map<String, Integer> requestBody) throws Exception {
         int quantity = requestBody.get("quantity"); // Λήψη της τιμής από το JSON αντικείμενο
         return carService.updateCarQuantity(carId, quantity);
     }
 
-    // Εμφανίζει μια λίστα με όλα τα αμάξια
-    @GetMapping(path = "/carlist")
-    public List<Car> getAllCars() throws Exception {
-        return carService.getAllCars();
+    @PatchMapping("/book/{id}")
+    public ResponseEntity<Reservation> bookCar(@PathVariable("id") int carId, @RequestBody Map<String, String> body) {
+        try {
+            return ResponseEntity.ok(carService.bookCar(carId, Long.parseLong(body.get("ssn")), Date.valueOf(body.get("date")), Time.valueOf(body.get("time"))));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return ResponseEntity.internalServerError().build();
+    }
+
+    @PatchMapping("/buy/{id}")
+    public ResponseEntity<Car> buyCar(@PathVariable("id") int carId) {
+        try {
+            return ResponseEntity.ok(carService.buyCar(carId));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return ResponseEntity.internalServerError().build();
     }
 }

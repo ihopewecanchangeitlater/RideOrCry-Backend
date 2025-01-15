@@ -11,7 +11,7 @@ public class Citizen {
     @NotNull(message = "AFM is required.")
     @Min(value = 0, message = "VAT must be at least 0")
     @Max(value = 999999999, message = "VAT must have at most 9 digits")
-    private Integer afm;
+    private Long afm;
 
     @NotBlank(message = "Name is required")
     private String name;
@@ -27,14 +27,13 @@ public class Citizen {
     @Size(min = 6, max = 20, message = "Password must be between 6 and 20 characters")
     private String password;
 
-
     private Boolean isAgent = false;
 
     public Citizen() {
     }
 
     // Ο κατασκευαστής με παραμέτρους για την καταχώρηση των πεδίων
-    public Citizen(Integer afm, String name, String surname, String email, String password, Boolean isAgent) {
+    public Citizen(Long afm, String name, String surname, String email, String password, Boolean isAgent) {
         this.afm = afm;
         this.name = name;
         this.surname = surname;
@@ -51,7 +50,7 @@ public class Citizen {
         return surname;
     }
 
-    public Integer getAfm() {
+    public Long getAfm() {
         return afm;
     }
 
@@ -63,7 +62,7 @@ public class Citizen {
         return password;
     }
 
-    public void setAfm(Integer afm) {
+    public void setAfm(Long afm) {
         this.afm = afm;
     }
 
