@@ -14,6 +14,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("cars")
+@CrossOrigin(origins = "*")
 public class CarController {
 
     @Autowired
