@@ -12,9 +12,8 @@ import java.sql.Time;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
-@RequestMapping("cars")
+@RequestMapping("/api/cars")
 public class CarController {
 
     @Autowired
@@ -63,9 +62,9 @@ public class CarController {
     }
 
     @PatchMapping("/book/{id}")
-    public ResponseEntity<Reservation> bookCar(@PathVariable("id") int carId, @RequestBody Map<String, String> body) {
+    public ResponseEntity<Reservation> bookCar(@PathVariable("id") long carId, @RequestBody Map<String, String> body) {
         try {
-            return ResponseEntity.ok(carService.bookCar(carId, Long.parseLong(body.get("ssn")), Date.valueOf(body.get("date")), Time.valueOf(body.get("time"))));
+            return ResponseEntity.ok(carService.bookCar(carId, body.get("afm"), Date.valueOf(body.get("date")), Time.valueOf(body.get("time"))));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

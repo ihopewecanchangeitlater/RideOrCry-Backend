@@ -6,14 +6,18 @@ import java.sql.Date;
 import java.sql.Time;
 
 @Entity
+@Table(name = "RESERVATIONS")
 public class Reservation {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     @ManyToOne
     private Citizen citizen;
+
     @ManyToOne
     private Car car;
+
     private Date date;
     private Time time;
 
@@ -21,6 +25,14 @@ public class Reservation {
     }
 
     public Reservation(Citizen citizen, Car car, Date date, Time time) {
+        this.citizen = citizen;
+        this.car = car;
+        this.date = date;
+        this.time = time;
+    }
+
+    public Reservation(long id, Citizen citizen, Car car, Date date, Time time) {
+        this.id = id;
         this.citizen = citizen;
         this.car = car;
         this.date = date;

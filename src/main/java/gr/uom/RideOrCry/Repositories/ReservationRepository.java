@@ -10,5 +10,5 @@ import java.util.List;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
-    List<Reservation> findByCitizenSsnAndCarIdAndDateAndTime(Long citizenSsn, long carId, Date date, Time time);
+    List<Reservation> findAllByCitizenAfmAndCarIdAndDateAndTime(String citizenAfm, long carId, Date date, Time time);
 }

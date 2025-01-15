@@ -33,8 +33,8 @@ public class CitizenService {
         return citizenRepository.findByEmailAndPassword(email, password);
     }
 
-    public Citizen getCitizen(Long ssn) {
-        Optional<Citizen> citizen = citizenRepository.findById(ssn);
+    public Citizen getCitizen(String afm) {
+        Optional<Citizen> citizen = citizenRepository.findById(afm);
         return citizen.orElse(null);
     }
 }

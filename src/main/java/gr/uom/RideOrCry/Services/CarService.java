@@ -74,11 +74,11 @@ public class CarService {
         return carRepository.findAll(spec);
     }
 
-    public Reservation bookCar(long carId, Long ssn, Date date, Time time) {
+    public Reservation bookCar(long carId, String afm, Date date, Time time) {
         Optional<Car> optionalCar = carRepository.findById(carId);
         Car car = optionalCar.orElse(null);
         if (Objects.isNull(car)) return null;
-        return reservationService.createReservation(car, ssn, date, time);
+        return reservationService.createReservation(car, afm, date, time);
     }
 
     public Car buyCar(long carId) {

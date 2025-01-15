@@ -1,32 +1,33 @@
 package gr.uom.RideOrCry.Entities;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
 
 @Entity
+@Table(name = "CARS")
 public class Car {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id; // ίσως αυτό να το κάναμε String και ονομασία να ήταν πινακίδα;
 
+    // Σχέση πολλά αμάξια σε έναν agent
+    @ManyToOne
+    private Agency agency;
+
     private String brand;
     private String model;
     private String fuel;
-    private String engine;
+    private int engine;
     private int seats;
     private double price;
     private int quantity;
     @Column(length = 1000)
     private String additionalInfo;
-    // Σχέση πολλά αμάξια σε έναν agent
-    @ManyToOne
-    @JoinColumn(name = "agency_id")
-    private Agency agency;
 
     public Car() {
     }
 
-    public Car(long id, String brand, String model, String fuel, String engine, int seats, double price, int quantity, String additionalInfo, Agency agency) {
+    public Car(long id, String brand, String model, String fuel, int engine, int seats, double price, int quantity, String additionalInfo, Agency agency) {
         this.id = id;
         this.brand = brand;
         this.model = model;
@@ -71,11 +72,11 @@ public class Car {
         this.fuel = fuel;
     }
 
-    public String getEngine() {
+    public int getEngine() {
         return engine;
     }
 
-    public void setEngine(String engine) {
+    public void setEngine(int engine) {
         this.engine = engine;
     }
 

@@ -1,17 +1,22 @@
 package gr.uom.RideOrCry.Entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.*;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
+@Table(name = "CITIZENS")
 public class Citizen {
-
     @Id
     @NotNull(message = "AFM is required.")
-    @Min(value = 0, message = "VAT must be at least 0")
-    @Max(value = 999999999, message = "VAT must have at most 9 digits")
-    private Long afm;
+    @Size(min = 9, max = 9, message = "TRN must have 9 digits")
+    @Column(length = 9)
+    private String afm;
 
     @NotBlank(message = "Name is required")
     private String name;
@@ -33,7 +38,7 @@ public class Citizen {
     }
 
     // Ο κατασκευαστής με παραμέτρους για την καταχώρηση των πεδίων
-    public Citizen(Long afm, String name, String surname, String email, String password, Boolean isAgent) {
+    public Citizen(String afm, String name, String surname, String email, String password, Boolean isAgent) {
         this.afm = afm;
         this.name = name;
         this.surname = surname;
@@ -50,7 +55,7 @@ public class Citizen {
         return surname;
     }
 
-    public Long getAfm() {
+    public String getAfm() {
         return afm;
     }
 
@@ -62,7 +67,7 @@ public class Citizen {
         return password;
     }
 
-    public void setAfm(Long afm) {
+    public void setAfm(String afm) {
         this.afm = afm;
     }
 

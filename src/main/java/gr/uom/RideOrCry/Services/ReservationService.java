@@ -20,15 +20,15 @@ public class ReservationService {
     @Autowired
     private CitizenService citizenService;
 
-    public boolean isAvailable(Car car, Long citizen_ssn, Date date, Time time) {
-        List<Reservation> reservations = reservationRepository.findByCitizenSsnAndCarIdAndDateAndTime(citizen_ssn, car.getId(), date, time);
+    public boolean isAvailable(Car car, String citizen_afm, Date date, Time time) {
+        List<Reservation> reservations = reservationRepository.findAllByCitizenAfmAndCarIdAndDateAndTime(citizen_afm, car.getId(), date, time);
         return car.isStockGT(reservations.size());
     }
 
-    public Reservation createReservation(Car car, Long ssn, Date date, Time time) {
-        if (!isAvailable(car, ssn, date, time)) return null;
+    public Reservation createReservation(Car car, String afm, Date date, Time time) {
+        if (!isAvailable(car, afm, date, time)) return null;
         try {
-            Citizen citizen = citizenService.getCitizen(ssn);
+            Citizen citizen = citizenService.getCitizen(afm);
             if (Objects.isNull(citizen)) throw new Exception("No citizen found");
             Reservation reservation = new Reservation(citizen, car, date, time);
             reservationRepository.saveAndFlush(reservation);

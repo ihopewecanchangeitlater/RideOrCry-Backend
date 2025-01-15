@@ -10,6 +10,5 @@ import java.util.Optional;
 public interface AgencyRepository extends JpaRepository<Agency, String> {
     // Εύρεση του agent ανάλογα με το όνομα
     Optional<Agency> findByName(String name);
-
     Optional<Agency> findByEmailAndPassword(String email, String password);
 }
