@@ -33,8 +33,8 @@ public class CitizenService {
         return citizenRepository.findByEmailAndPassword(email, password);
     }
 
-    public Citizen getCitizen(String afm) {
+    public Citizen getCitizen(String afm) throws Exception {
         Optional<Citizen> citizen = citizenRepository.findById(afm);
-        return citizen.orElse(null);
+        return citizen.orElseThrow(() -> new Exception("Car not found with ID: " + afm));
     }
 }

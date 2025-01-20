@@ -2,7 +2,6 @@ package gr.uom.RideOrCry.Services;
 
 import gr.uom.RideOrCry.Entities.Agency;
 import gr.uom.RideOrCry.Entities.Car;
-import gr.uom.RideOrCry.Entities.Reservation;
 import gr.uom.RideOrCry.Repositories.AgencyRepository;
 import gr.uom.RideOrCry.Repositories.CarRepository;
 import gr.uom.RideOrCry.Specifications.CarSpecification;
@@ -10,11 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
-import java.sql.Time;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -24,14 +20,14 @@ public class CarService {
     private CarRepository carRepository;
     @Autowired
     private AgencyRepository agencyRepository;
-    @Autowired
-    private ReservationService reservationService;
+//    @Autowired
+//    private ReservationService reservationService;
 
     // Μέθοδος προσθήκης αμαξιού.
     // Βρίσκει το όνομα του agent και θέτει στο αμάξι το όνομα του agent πριν το αποθηκεύσει στην βάση
-    public Car addCar(Car car, String agencyName) throws Exception {
-        Agency agency = agencyRepository.findByName(agencyName)
-                .orElseThrow(() -> new Exception("Agency not found with name: " + agencyName));
+    public Car addCar(Car car, String agencyAfm) throws Exception {
+        Agency agency = agencyRepository.findById(agencyAfm)
+                .orElseThrow(() -> new Exception("Agency not found with id: " + agencyAfm));
         car.setAgency(agency);
         return carRepository.save(car);
     }
@@ -74,12 +70,12 @@ public class CarService {
         return carRepository.findAll(spec);
     }
 
-    public Reservation bookCar(long carId, String afm, Date date, Time time) {
-        Optional<Car> optionalCar = carRepository.findById(carId);
-        Car car = optionalCar.orElse(null);
-        if (Objects.isNull(car)) return null;
-        return reservationService.createReservation(car, afm, date, time);
-    }
+//    public Reservation bookCar(long carId, String afm, Date date, Time time) {
+//        Optional<Car> optionalCar = carRepository.findById(carId);
+//        Car car = optionalCar.orElse(null);
+//        if (Objects.isNull(car)) return null;
+//        return reservationService.createReservation(car, afm, date, time);
+//    }
 
     public Car buyCar(long carId) {
         Optional<Car> optionalCar = carRepository.findById(carId);

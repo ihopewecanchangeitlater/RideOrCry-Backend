@@ -3,20 +3,22 @@ package gr.uom.RideOrCry.Controllers;
 
 import gr.uom.RideOrCry.Entities.Agency;
 import gr.uom.RideOrCry.Services.AgencyService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/agencies")
 public class AgencyController {
 
-    private final AgencyService agencyService;
+    @Autowired
+    private AgencyService agencyService;
 
-
-    public AgencyController(AgencyService agencyService) {
-        this.agencyService = agencyService;
+    // Endpoint για την εμφάνιση όλων των agents
+    @GetMapping("/agentlist")
+    public List<Agency> getAgents() throws Exception {
+        return agencyService.getAgencies();
     }
 
     // Endpoint για την προσθήκη νέου agent
@@ -25,9 +27,4 @@ public class AgencyController {
         return agencyService.addAgent(agent);
     }
 
-    // Endpoint για την εμφάνιση όλων των agents
-    @GetMapping("/agentlist")
-    public List<Agency> getAgents() throws Exception {
-        return agencyService.getAgencies();
-    }
 }

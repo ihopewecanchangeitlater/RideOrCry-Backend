@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/citizens")
 public class CitizenController {
@@ -17,15 +16,15 @@ public class CitizenController {
     @Autowired
     private CitizenService citizenService;
 
-    @PostMapping("/register")
-    public ResponseEntity<Citizen> registerCitizen(@Valid @RequestBody Citizen citizen) {
-        Citizen registeredCitizen = citizenService.registerCitizen(citizen);
-        return ResponseEntity.ok(registeredCitizen);
-    }
-
     // Endpoint για την εμφάνιση όλων των agents
     @GetMapping(path = "/citizenlist")
     public List<Citizen> getAgents() throws Exception {
         return citizenService.getCitizens();
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<Citizen> registerCitizen(@Valid @RequestBody Citizen citizen) {
+        Citizen registeredCitizen = citizenService.registerCitizen(citizen);
+        return ResponseEntity.ok(registeredCitizen);
     }
 }

@@ -1,18 +1,14 @@
 package gr.uom.RideOrCry.Controllers;
 
 import gr.uom.RideOrCry.Entities.Car;
-import gr.uom.RideOrCry.Entities.Reservation;
 import gr.uom.RideOrCry.Services.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
-import java.sql.Time;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/cars")
 public class CarController {
@@ -50,9 +46,9 @@ public class CarController {
     }
 
     // Endpoint που προσθέτει ένα αμάξι. Το αμάξι το προσθέτει στον αντιπρόσωπο (θέλει ως εισαγωγή το agencyName)
-    @PostMapping(path = "/addcar/{agencyName}")
-    public Car addCar(@RequestBody Car car, @PathVariable String agencyName) throws Exception {
-        return carService.addCar(car, agencyName);
+    @PostMapping(path = "/addcar/{agencyAfm}")
+    public Car addCar(@RequestBody Car car, @PathVariable String agencyAfm) throws Exception {
+        return carService.addCar(car, agencyAfm);
     }
 
     // Ενημερώνει το αμάξι με το συγκεκριμένο id.
@@ -62,15 +58,15 @@ public class CarController {
         return carService.updateCarQuantity(carId, quantity);
     }
 
-    @PatchMapping("/book/{id}")
-    public ResponseEntity<Reservation> bookCar(@PathVariable("id") long carId, @RequestBody Map<String, String> body) {
-        try {
-            return ResponseEntity.ok(carService.bookCar(carId, body.get("afm"), Date.valueOf(body.get("date")), Time.valueOf(body.get("time"))));
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return ResponseEntity.internalServerError().build();
-    }
+//    @PatchMapping("/book/{id}")
+//    public ResponseEntity<Reservation> bookCar(@PathVariable("id") long carId, @RequestBody Map<String, String> body) {
+//        try {
+//            return ResponseEntity.ok(carService.bookCar(carId, body.get("afm"), Date.valueOf(body.get("date")), Time.valueOf(body.get("time"))));
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//        }
+//        return ResponseEntity.internalServerError().build();
+//    }
 
     @PatchMapping("/buy/{id}")
     public ResponseEntity<Car> buyCar(@PathVariable("id") int carId) {
