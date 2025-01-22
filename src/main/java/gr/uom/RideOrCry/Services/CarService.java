@@ -1,18 +1,16 @@
 package gr.uom.RideOrCry.Services;
 
-import gr.uom.RideOrCry.Models.Car;
-import gr.uom.RideOrCry.Models.Reservation;
+import gr.uom.RideOrCry.Entities.Agency;
+import gr.uom.RideOrCry.Entities.Car;
+import gr.uom.RideOrCry.Repositories.AgencyRepository;
 import gr.uom.RideOrCry.Repositories.CarRepository;
 import gr.uom.RideOrCry.Specifications.CarSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
-import java.sql.Time;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -21,7 +19,48 @@ public class CarService {
     @Autowired
     private CarRepository carRepository;
     @Autowired
-    private ReservationService reservationService;
+    private AgencyRepository agencyRepository;
+//    @Autowired
+//    private ReservationService reservationService;
+
+    // Μέθοδος προσθήκης αμαξιού.
+    // Βρίσκει το όνομα του agent και θέτει στο αμάξι το όνομα του agent πριν το αποθηκεύσει στην βάση
+    public Car addCar(Car car, String agencyAfm) throws Exception {
+        Agency agency = agencyRepository.findById(agencyAfm)
+                .orElseThrow(() -> new Exception("Agency not found with id: " + agencyAfm));
+        car.setAgency(agency);
+        return carRepository.save(car);
+    }
+
+    // Μέθοδος που λαμβάνει τα αμάξια ανάλογα με το όνομα του agent για να τα εμφανίσει
+    public List<Car> getCarsByAgency(String agencyName) throws Exception {
+        Agency agency = agencyRepository.findByName(agencyName)
+                .orElseThrow(() -> new Exception("Agency not found with name: " + agencyName));
+        return carRepository.findByAgency(agency);
+    }
+
+    // Μέθοδος που λαμβάνει το αμάξι ανάλογα με το id του
+    public Car getCarById(Long carId) throws Exception {
+        return carRepository.findById(carId)
+                .orElseThrow(() -> new Exception("Car not found with ID: " + carId));
+    }
+
+    // Μέθοδος που ενημερώνει το αμάξι (με βάση το id του) στην βάση
+    public Car updateCarQuantity(Long carId, int quantity) throws Exception {
+        Car existingCar = carRepository.findById(carId)
+                .orElseThrow(() -> new Exception("Car not found with ID: " + carId));
+
+        // Ενημέρωση μόνο του quantity
+        existingCar.setQuantity(quantity);
+
+        // Αποθήκευση αλλαγών
+        return carRepository.save(existingCar);
+    }
+
+    // Μέθοδος που λαμβάνει την λίστα όλων των αμαξιών της βάσης
+    public List<Car> getAllCars() {
+        return carRepository.findAll();
+    }
 
     private String extractOperation(String key) {
         if (key.endsWith("_gt")) return "gt";
@@ -59,14 +98,14 @@ public class CarService {
         return carRepository.findAll(spec);
     }
 
-    public Reservation bookCar(int carId, String ssn, Date date, Time time) {
-        Optional<Car> optionalCar = carRepository.findById(carId);
-        Car car = optionalCar.orElse(null);
-        if (Objects.isNull(car)) return null;
-        return reservationService.createReservation(car, ssn, date, time);
-    }
+//    public Reservation bookCar(long carId, String afm, Date date, Time time) {
+//        Optional<Car> optionalCar = carRepository.findById(carId);
+//        Car car = optionalCar.orElse(null);
+//        if (Objects.isNull(car)) return null;
+//        return reservationService.createReservation(car, afm, date, time);
+//    }
 
-    public Car buyCar(int carId) {
+    public Car buyCar(long carId) {
         Optional<Car> optionalCar = carRepository.findById(carId);
         if (optionalCar.isEmpty()) return null;
         Car car = optionalCar.get();

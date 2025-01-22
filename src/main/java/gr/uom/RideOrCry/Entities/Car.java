@@ -1,43 +1,49 @@
-package gr.uom.RideOrCry.Models;
+package gr.uom.RideOrCry.Entities;
 
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "CARS")
 public class Car {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id; // ίσως αυτό να το κάναμε String και ονομασία να ήταν πινακίδα;
+
+    // Σχέση πολλά αμάξια σε έναν agent
+    @ManyToOne
+    private Agency agency;
+
     private String brand;
     private String model;
     private String fuel;
     private int engine;
     private int seats;
     private double price;
-    private String additionalInformation;
-    private int stock;
-    @ManyToOne
-    private Dealer dealer;
+    private int quantity;
+    @Column(length = 1000)
+    private String additionalInfo;
 
     public Car() {
     }
 
-    public Car(String brand, String model, String fuel, int engine, int seats, double price, String additionalInformation, int stock, Dealer dealer) {
+    public Car(long id, String brand, String model, String fuel, int engine, int seats, double price, int quantity, String additionalInfo, Agency agency) {
+        this.id = id;
         this.brand = brand;
         this.model = model;
         this.fuel = fuel;
         this.engine = engine;
         this.seats = seats;
         this.price = price;
-        this.additionalInformation = additionalInformation;
-        this.stock = stock;
-        this.dealer = dealer;
+        this.quantity = quantity;
+        this.additionalInfo = additionalInfo;
+        this.agency = agency;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -89,39 +95,39 @@ public class Car {
         this.price = price;
     }
 
-    public String getAdditionalInformation() {
-        return additionalInformation;
+    public String getAdditionalInfo() {
+        return additionalInfo;
     }
 
-    public void setAdditionalInformation(String additionalInformation) {
-        this.additionalInformation = additionalInformation;
+    public void setAdditionalInfo(String additionalInfo) {
+        this.additionalInfo = additionalInfo;
     }
 
-    public int getStock() {
-        return stock;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setStock(int stock) {
-        this.stock = stock;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
-    public Dealer getDealer() {
-        return dealer;
+    public Agency getAgency() {
+        return agency;
     }
 
-    public void setDealer(Dealer dealer) {
-        this.dealer = dealer;
+    public void setAgency(Agency agency) {
+        this.agency = agency;
     }
 
     public boolean hasStock() {
-        return this.stock > 0;
+        return this.quantity > 0;
     }
 
     public void buy() {
-        this.stock--;
+        this.quantity--;
     }
 
     public boolean isStockGT(int size) {
-        return this.stock > size;
+        return this.quantity > size;
     }
 }
