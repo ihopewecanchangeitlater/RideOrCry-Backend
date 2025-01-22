@@ -23,10 +23,38 @@ public class CarService {
     @Autowired
     private ReservationService reservationService;
 
+    private String extractOperation(String key) {
+        if (key.endsWith("_gt")) return "gt";
+        if (key.endsWith("_gte")) return "gte";
+        if (key.endsWith("_lt")) return "lt";
+        if (key.endsWith("_lte")) return "lte";
+        return "eq"; // Default to equal
+    }
+
+    private String extractField(String key) {
+        return key.replaceAll("_(gt|gte|lt|lte)$", ""); // Remove the operation suffix
+    }
+
+    private String extractOperation(String key) {
+        if (key.endsWith("_gt")) return "gt";
+        if (key.endsWith("_gte")) return "gte";
+        if (key.endsWith("_lt")) return "lt";
+        if (key.endsWith("_lte")) return "lte";
+        return "eq"; // Default to equal
+    }
+
+    private String extractField(String key) {
+        return key.replaceAll("_(gt|gte|lt|lte)$", ""); // Remove the operation suffix
+    }
+
     public List<Car> searchCar(Map<String, String> filters) {
         Specification<Car> spec = Specification.where(null);
         for (Map.Entry<String, String> filter : filters.entrySet()) {
-            spec = spec.and(CarSpecification.filterBy(filter.getKey(), filter.getValue()));
+            String key = filter.getKey();
+            String operation = extractOperation(key);
+            String field = extractField(key);
+            String value = filter.getValue();
+            spec = spec.and(CarSpecification.filterBy(field, operation, value));
         }
         return carRepository.findAll(spec);
     }
