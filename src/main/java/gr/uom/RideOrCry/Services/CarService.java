@@ -74,18 +74,6 @@ public class CarService {
         return key.replaceAll("_(gt|gte|lt|lte)$", ""); // Remove the operation suffix
     }
 
-    private String extractOperation(String key) {
-        if (key.endsWith("_gt")) return "gt";
-        if (key.endsWith("_gte")) return "gte";
-        if (key.endsWith("_lt")) return "lt";
-        if (key.endsWith("_lte")) return "lte";
-        return "eq"; // Default to equal
-    }
-
-    private String extractField(String key) {
-        return key.replaceAll("_(gt|gte|lt|lte)$", ""); // Remove the operation suffix
-    }
-
     public List<Car> searchCar(Map<String, String> filters) {
         Specification<Car> spec = Specification.where(null);
         for (Map.Entry<String, String> filter : filters.entrySet()) {
