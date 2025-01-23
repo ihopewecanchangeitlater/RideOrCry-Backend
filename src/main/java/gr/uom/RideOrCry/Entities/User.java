@@ -1,5 +1,6 @@
 package gr.uom.RideOrCry.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import gr.uom.RideOrCry.DTO.Agency;
 import gr.uom.RideOrCry.DTO.Citizen;
 import gr.uom.RideOrCry.DTO.UserRegistrationRequest;
@@ -28,6 +29,7 @@ public class User {
     @NotBlank(message = "Email is required")
     private String email;
 
+    @JsonIgnore
     @NotBlank(message = "Password is required.")
     @Size(min = 6, max = 20, message = "Password must be between 6 and 20 characters long.")
     private String password;

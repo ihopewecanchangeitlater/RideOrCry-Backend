@@ -1,8 +1,6 @@
 package gr.uom.RideOrCry.Controllers;
 
-import gr.uom.RideOrCry.DTO.Agency;
-import gr.uom.RideOrCry.DTO.AuthenticationRequest;
-import gr.uom.RideOrCry.DTO.Citizen;
+import gr.uom.RideOrCry.DTO.*;
 import gr.uom.RideOrCry.Exceptions.UserAlreadyExistsException;
 import gr.uom.RideOrCry.Services.CustomUserDetailsService;
 import gr.uom.RideOrCry.Services.UserService;
@@ -12,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -51,12 +48,12 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody AuthenticationRequest authenticationRequest) {
+    public ResponseEntity<LoginResponse> loginUser(@RequestBody AuthenticationRequest authenticationRequest) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword())
         );
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
-        return ResponseEntity.ok(jwtUtil.generateToken(userDetails));
+        final CustomUserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
+        return ResponseEntity.ok(new LoginResponse(userDetails.getUser(), jwtUtil.generateToken(userDetails)));
     }
 
     @PostMapping("/logout")

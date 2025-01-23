@@ -3,16 +3,15 @@ package gr.uom.RideOrCry.DTO;
 
 public class LoginResponse {
     private Object user;    // Object για να υποστηρίζει τόσο Citizen όσο και Agency
-    private boolean isAgent;
+    private String token;
     private String error;
 
     public LoginResponse() {
     }
 
-    // Constructor
-    public LoginResponse(Object user, boolean isAgent) {
+    public LoginResponse(Object user, String token) {
         this.user = user;
-        this.isAgent = isAgent;
+        this.token = token;
     }
 
     public LoginResponse(String error) {
@@ -28,20 +27,20 @@ public class LoginResponse {
         this.user = user;
     }
 
-    public boolean isAgent() {
-        return isAgent;
-    }
-
-    public void setAgent(boolean isAgent) {
-        this.isAgent = isAgent;
-    }
-
     public void setError(String error) {
         this.error = error;
     }
 
     public String getError() {
         return this.error;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
 
