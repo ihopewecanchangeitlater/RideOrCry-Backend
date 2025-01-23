@@ -48,11 +48,12 @@ public class SecurityConfig {
         try {
             http
                     .csrf(AbstractHttpConfigurer::disable)
-                    .authorizeHttpRequests(authorize ->
-                            authorize.requestMatchers("/api/register", "/api/login")
-                                    .permitAll()
-                                    .anyRequest()
-                                    .authenticated())
+                    .authorizeHttpRequests(authorize -> authorize
+                            .requestMatchers("/api/register/**", "/api/login").permitAll()
+                            .requestMatchers("/api/agencies").hasRole("AGENCY")
+                            .requestMatchers("/api/citizens").hasRole("CITIZEN")
+                            .requestMatchers("/api/cars/**", "/api/reservations/**").hasAnyRole("AGENCY", "CITIZEN")
+                            .anyRequest().authenticated())
                     .exceptionHandling(exception -> exception
                             .authenticationEntryPoint(jwtAuthenticationEntryPoint))
                     .sessionManagement(session ->

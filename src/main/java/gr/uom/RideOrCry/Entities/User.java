@@ -1,13 +1,13 @@
 package gr.uom.RideOrCry.Entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import gr.uom.RideOrCry.Enums.UserRole;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+
+import java.util.Set;
 
 @Entity
 @Table(name = "USERS")
@@ -26,6 +26,10 @@ public class User {
     @NotBlank(message = "Password is required.")
     @Size(min = 6, max = 20, message = "Password must be at least 6 characters long.")
     private String password;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    private Set<UserRole> roles;
 
     public User() {
     }
@@ -58,5 +62,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<UserRole> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<UserRole> roles) {
+        this.roles = roles;
     }
 }

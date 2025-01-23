@@ -4,12 +4,14 @@ package gr.uom.RideOrCry.Controllers;
 import gr.uom.RideOrCry.Entities.Agency;
 import gr.uom.RideOrCry.Services.AgencyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/agencies")
+@PreAuthorize("hasRole('AGENCY')")
 public class AgencyController {
 
     @Autowired
