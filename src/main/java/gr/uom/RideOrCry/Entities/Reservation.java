@@ -1,5 +1,6 @@
 package gr.uom.RideOrCry.Entities;
 
+import gr.uom.RideOrCry.DTO.Citizen;
 import jakarta.persistence.*;
 
 import java.sql.Date;
@@ -13,7 +14,7 @@ public class Reservation {
     private long id;
 
     @ManyToOne
-    private Citizen citizen;
+    private User citizen;
 
     @ManyToOne
     private Car car;
@@ -24,14 +25,14 @@ public class Reservation {
     public Reservation() {
     }
 
-    public Reservation(Citizen citizen, Car car, Date date, Time time) {
+    public Reservation(User citizen, Car car, Date date, Time time) {
         this.citizen = citizen;
         this.car = car;
         this.date = date;
         this.time = time;
     }
 
-    public Reservation(long id, Citizen citizen, Car car, Date date, Time time) {
+    public Reservation(long id, User citizen, Car car, Date date, Time time) {
         this.id = id;
         this.citizen = citizen;
         this.car = car;
@@ -48,10 +49,10 @@ public class Reservation {
     }
 
     public Citizen getCitizen() {
-        return citizen;
+        return new Citizen(citizen);
     }
 
-    public void setCitizen(Citizen citizen) {
+    public void setCitizen(User citizen) {
         this.citizen = citizen;
     }
 

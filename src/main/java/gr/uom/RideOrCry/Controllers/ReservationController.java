@@ -17,29 +17,19 @@ public class ReservationController {
     private ReservationService reservationService;
 
     @GetMapping("/{user_id}")
-    public ResponseEntity<List<Reservation>> getReservations(@PathVariable String user_id, @RequestParam Boolean is_agent) {
-        try {
-            List<Reservation> reservations = reservationService.getReservations(user_id, is_agent);
-            return ResponseEntity.ok(reservations);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return ResponseEntity.internalServerError().build();
+    public ResponseEntity<List<Reservation>> getReservations(@PathVariable String user_id) throws Exception {
+        List<Reservation> reservations = reservationService.getReservations(user_id);
+        return ResponseEntity.ok(reservations);
     }
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<List<Reservation>> getReservations() {
-        try {
-            List<Reservation> reservations = reservationService.getReservations();
-            return ResponseEntity.ok(reservations);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return ResponseEntity.internalServerError().build();
+        List<Reservation> reservations = reservationService.getReservations();
+        return ResponseEntity.ok(reservations);
     }
 
     @PostMapping
-    public ResponseEntity<Reservation> createReservation(@RequestBody ReservationRequest reservationRequest) {
+    public ResponseEntity<Reservation> createReservation(@RequestBody ReservationRequest reservationRequest) throws Exception {
         Reservation reservation = reservationService.createReservation(reservationRequest);
         return ResponseEntity.ok(reservation);
     }

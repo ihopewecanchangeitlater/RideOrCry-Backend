@@ -1,27 +1,26 @@
 package gr.uom.RideOrCry.Controllers;
 
+import gr.uom.RideOrCry.DTO.Agency;
 import gr.uom.RideOrCry.DTO.AuthenticationRequest;
-import gr.uom.RideOrCry.Entities.User;
-import gr.uom.RideOrCry.Enums.UserRole;
-import gr.uom.RideOrCry.Exceptions.UnsupportedUserRoleException;
+import gr.uom.RideOrCry.DTO.Citizen;
 import gr.uom.RideOrCry.Exceptions.UserAlreadyExistsException;
-import gr.uom.RideOrCry.Repositories.UserRepository;
 import gr.uom.RideOrCry.Services.CustomUserDetailsService;
+import gr.uom.RideOrCry.Services.UserService;
 import gr.uom.RideOrCry.Utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Set;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/auth")
 public class AuthController {
 
     @Autowired
@@ -31,7 +30,7 @@ public class AuthController {
     private CustomUserDetailsService userDetailsService;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -39,40 +38,25 @@ public class AuthController {
     @Autowired
     private JwtUtil jwtUtil;
 
-    @PostMapping("/register/{role}")
-    public ResponseEntity<String> registerUser(@PathVariable String role, @RequestBody User user) {
-        try {
-            if (role.equals("agency")) user.setRoles(Set.of(UserRole.AGENCY));
-            else if (role.equals("citizen")) user.setRoles(Set.of(UserRole.CITIZEN));
-            else throw new UnsupportedUserRoleException();
-            if (userRepository.findByAfmOrEmail(user.getAfm(), user.getEmail()).isPresent())
-                throw new UserAlreadyExistsException();
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            userRepository.save(user);
-            return ResponseEntity.ok("User registered successfully");
-        } catch (UserAlreadyExistsException | UnsupportedUserRoleException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            System.err.println(e.getLocalizedMessage());
-        }
-        return ResponseEntity.internalServerError().body("Error occurred");
+    @PostMapping("/register/citizen")
+    public ResponseEntity<String> registerUser(@RequestBody Citizen citizen) throws UserAlreadyExistsException {
+        userService.createCitizen(citizen);
+        return ResponseEntity.ok("User registered successfully");
+    }
+
+    @PostMapping("/register/agency")
+    public ResponseEntity<String> registerUser(@RequestBody Agency agency) throws UserAlreadyExistsException {
+        userService.createAgency(agency);
+        return ResponseEntity.ok("User registered successfully");
     }
 
     @PostMapping("/login")
     public ResponseEntity<String> loginUser(@RequestBody AuthenticationRequest authenticationRequest) {
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword())
-            );
-            final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
-            return ResponseEntity.ok(jwtUtil.generateToken(userDetails));
-        } catch (AuthenticationException ae) {
-            System.err.println(ae.getLocalizedMessage());
-            return ResponseEntity.badRequest().body("Authentication failed");
-        } catch (Exception e) {
-            System.err.println(e.getLocalizedMessage());
-        }
-        return ResponseEntity.internalServerError().body("Error occurred");
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword())
+        );
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
+        return ResponseEntity.ok(jwtUtil.generateToken(userDetails));
     }
 
     @PostMapping("/logout")
@@ -81,8 +65,4 @@ public class AuthController {
         return ResponseEntity.ok("Logged out successfully");
     }
 
-    @GetMapping("/hello")
-    public String hello() {
-        return "Hello, World!";
-    }
 }

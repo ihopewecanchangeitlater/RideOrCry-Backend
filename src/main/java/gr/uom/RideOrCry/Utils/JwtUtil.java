@@ -1,13 +1,11 @@
 package gr.uom.RideOrCry.Utils;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -25,11 +23,7 @@ public class JwtUtil {
     private String EXPIRATION_TIME;
 
     public String extractUsername(String token) {
-        try {
-            return extractClaim(token, Claims::getSubject);
-        } catch (ExpiredJwtException e) {
-            throw new ExpiredJwtException(e.getHeader(), e.getClaims(), "Token has expired");
-        }
+        return extractClaim(token, Claims::getSubject);
     }
 
     public Date extractExpiration(String token) {
@@ -64,11 +58,7 @@ public class JwtUtil {
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {
-        try {
-            String extractedUsername = extractUsername(token);
-            return extractedUsername.equals(userDetails.getUsername()) && !isTokenExpired(token);
-        } catch (ExpiredJwtException e) {
-            throw new ExpiredJwtException(e.getHeader(), e.getClaims(), "Token has expired");
-        }
+        String extractedUsername = extractUsername(token);
+        return extractedUsername.equals(userDetails.getUsername()) && !isTokenExpired(token);
     }
 }

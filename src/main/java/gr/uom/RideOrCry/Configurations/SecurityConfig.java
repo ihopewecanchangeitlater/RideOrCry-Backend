@@ -44,26 +44,21 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) {
-        try {
-            http
-                    .csrf(AbstractHttpConfigurer::disable)
-                    .authorizeHttpRequests(authorize -> authorize
-                            .requestMatchers("/api/register/**", "/api/login").permitAll()
-                            .requestMatchers("/api/agencies").hasRole("AGENCY")
-                            .requestMatchers("/api/citizens").hasRole("CITIZEN")
-                            .requestMatchers("/api/cars/**", "/api/reservations/**").hasAnyRole("AGENCY", "CITIZEN")
-                            .anyRequest().authenticated())
-                    .exceptionHandling(exception -> exception
-                            .authenticationEntryPoint(jwtAuthenticationEntryPoint))
-                    .sessionManagement(session ->
-                            session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-            http.addFilterBefore(jwtRequestFilter(), UsernamePasswordAuthenticationFilter.class);
-            return http.build();
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
-        return null;
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/api/auth/register/**", "/api/auth/login").permitAll()
+                        .requestMatchers("/api/agencies/**").hasRole("AGENCY")
+                        .requestMatchers("/api/citizens/**").hasRole("CITIZEN")
+                        .requestMatchers("/api/cars/**", "/api/reservations/**").hasAnyRole("AGENCY", "CITIZEN")
+                        .anyRequest().authenticated())
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(jwtAuthenticationEntryPoint))
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        http.addFilterBefore(jwtRequestFilter(), UsernamePasswordAuthenticationFilter.class);
+        return http.build();
     }
 
     @Bean

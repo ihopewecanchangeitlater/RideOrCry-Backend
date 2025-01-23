@@ -1,12 +1,10 @@
 package gr.uom.RideOrCry.Services;
 
-import gr.uom.RideOrCry.Entities.Citizen;
+import gr.uom.RideOrCry.Entities.User;
 import gr.uom.RideOrCry.Repositories.CitizenRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CitizenService {
@@ -14,27 +12,11 @@ public class CitizenService {
     @Autowired
     private CitizenRepository citizenRepository;
 
-    public Citizen registerCitizen(Citizen citizen) {
-        // Έλεγχος αν υπάρχει ήδη το AFM στην βάση
-        if (citizenRepository.existsById(citizen.getAfm())) {
-            throw new IllegalArgumentException("Citizen with this AFM already exists.");
-        }
-        if (citizen.isAgent()) {
-            citizen.setIsAgent(false);
-        }
-        return citizenRepository.save(citizen);
+    public User findByEmailAndPassword(String email, String password) {
+        return citizenRepository.findCitizenByEmailAndPassword(email, password).orElseThrow(EntityNotFoundException::new);
     }
 
-    public List<Citizen> getCitizens() {
-        return citizenRepository.findAll();
-    }
-
-    public Citizen findByEmailAndPassword(String email, String password) {
-        return citizenRepository.findByEmailAndPassword(email, password);
-    }
-
-    public Citizen getCitizen(String afm) throws Exception {
-        Optional<Citizen> citizen = citizenRepository.findById(afm);
-        return citizen.orElseThrow(() -> new Exception("Car not found with ID: " + afm));
+    public User getCitizen(String afm) {
+        return citizenRepository.findById(afm).orElseThrow(EntityNotFoundException::new);
     }
 }

@@ -36,13 +36,9 @@ public class CarController {
 
     @GetMapping("/search")
     public ResponseEntity<List<Car>> searchCar(@RequestParam Map<String, String> filters) {
-        try {
-            List<Car> cars = carService.searchCar(filters);
-            return ResponseEntity.ok(cars);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return ResponseEntity.internalServerError().build();
+        List<Car> cars = carService.searchCar(filters);
+        return ResponseEntity.ok(cars);
+
     }
 
     // Endpoint που προσθέτει ένα αμάξι. Το αμάξι το προσθέτει στον αντιπρόσωπο (θέλει ως εισαγωγή το agencyName)
@@ -58,23 +54,8 @@ public class CarController {
         return carService.updateCarQuantity(carId, quantity);
     }
 
-//    @PatchMapping("/book/{id}")
-//    public ResponseEntity<Reservation> bookCar(@PathVariable("id") long carId, @RequestBody Map<String, String> body) {
-//        try {
-//            return ResponseEntity.ok(carService.bookCar(carId, body.get("afm"), Date.valueOf(body.get("date")), Time.valueOf(body.get("time"))));
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//        }
-//        return ResponseEntity.internalServerError().build();
-//    }
-
     @PatchMapping("/buy/{id}")
-    public ResponseEntity<Car> buyCar(@PathVariable("id") int carId) {
-        try {
-            return ResponseEntity.ok(carService.buyCar(carId));
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return ResponseEntity.internalServerError().build();
+    public ResponseEntity<Car> buyCar(@PathVariable("id") int carId) throws Exception {
+        return ResponseEntity.ok(carService.buyCar(carId));
     }
 }

@@ -1,5 +1,6 @@
 package gr.uom.RideOrCry.Entities;
 
+import gr.uom.RideOrCry.DTO.Agency;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,7 +12,7 @@ public class Car {
 
     // Σχέση πολλά αμάξια σε έναν agent
     @ManyToOne
-    private Agency agency;
+    private User agency;
 
     private String brand;
     private String model;
@@ -26,7 +27,7 @@ public class Car {
     public Car() {
     }
 
-    public Car(long id, String brand, String model, String fuel, int engine, int seats, double price, int quantity, String additionalInfo, Agency agency) {
+    public Car(long id, String brand, String model, String fuel, int engine, int seats, double price, int quantity, String additionalInfo, User agency) {
         this.id = id;
         this.brand = brand;
         this.model = model;
@@ -112,10 +113,10 @@ public class Car {
     }
 
     public Agency getAgency() {
-        return agency;
+        return new Agency(this.agency);
     }
 
-    public void setAgency(Agency agency) {
+    public void setAgency(User agency) {
         this.agency = agency;
     }
 
