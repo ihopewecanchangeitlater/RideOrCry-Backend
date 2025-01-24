@@ -1,5 +1,6 @@
 package gr.uom.RideOrCry.Configurations;
 
+import gr.uom.RideOrCry.Enums.UserRole;
 import gr.uom.RideOrCry.Services.CustomUserDetailsService;
 import gr.uom.RideOrCry.Utils.JwtAuthenticationEntryPoint;
 import gr.uom.RideOrCry.Utils.JwtUtil;
@@ -49,9 +50,9 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/auth/register/**", "/api/auth/login").permitAll()
-                        .requestMatchers("/api/agencies/**").hasRole("AGENCY")
-                        .requestMatchers("/api/citizens/**").hasRole("CITIZEN")
-                        .requestMatchers("/api/cars/**", "/api/reservations/**").hasAnyRole("AGENCY", "CITIZEN")
+                        .requestMatchers("/api/agencies/**").hasAuthority(UserRole.AGENCY.getAuthority())
+                        .requestMatchers("/api/citizens/**").hasAuthority(UserRole.CITIZEN.getAuthority())
+                        .requestMatchers("/api/cars/**", "/api/reservations/**").hasAnyAuthority(UserRole.AGENCY.getAuthority(), UserRole.CITIZEN.getAuthority())
                         .anyRequest().authenticated())
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint))

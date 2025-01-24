@@ -7,22 +7,11 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.setContentType("application/json");
-
-        String errorMessage = (String) request.getAttribute("exception");
-        if (errorMessage == null) {
-            errorMessage = "Unauthorized: " + authException.getMessage();
-        }
-
-        PrintWriter writer = response.getWriter();
-        writer.write("{ \"error\": \"" + errorMessage + "\" }");
-        writer.flush();
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized: " + authException.getMessage());
     }
 }
