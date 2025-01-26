@@ -16,15 +16,21 @@ public class ReservationController {
     @Autowired
     private ReservationService reservationService;
 
-    @GetMapping("/{user_id}")
-    public ResponseEntity<List<Reservation>> getReservations(@PathVariable String user_id) throws Exception {
-        List<Reservation> reservations = reservationService.getReservations(user_id);
+    @GetMapping
+    public ResponseEntity<List<Reservation>> getUserReservations() {
+        List<Reservation> reservations = reservationService.getUserReservations();
         return ResponseEntity.ok(reservations);
     }
 
-    @GetMapping
-    public ResponseEntity<List<Reservation>> getReservations() {
-        List<Reservation> reservations = reservationService.getReservations();
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Reservation>> getUserReservations(@PathVariable String userId) throws Exception {
+        List<Reservation> reservations = reservationService.getUserReservations(userId);
+        return ResponseEntity.ok(reservations);
+    }
+
+    @GetMapping("/car/{carId}")
+    public ResponseEntity<List<Reservation>> getCarReservations(@PathVariable Long carId) throws Exception {
+        List<Reservation> reservations = reservationService.getCarReservations(carId);
         return ResponseEntity.ok(reservations);
     }
 
@@ -34,4 +40,9 @@ public class ReservationController {
         return ResponseEntity.ok(reservation);
     }
 
+    @DeleteMapping("/{reservationId}")
+    public ResponseEntity<Reservation> deleteReservation(@PathVariable Long reservationId) throws Exception {
+        Reservation reservation = reservationService.deleteReservation(reservationId);
+        return ResponseEntity.ok(reservation);
+    }
 }

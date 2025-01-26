@@ -12,5 +12,8 @@ import java.util.List;
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long>, JpaSpecificationExecutor<Reservation> {
     List<Reservation> findAllByCitizenAfmAndCarIdAndDateAndTime(String citizenAfm, long carId, Date date, Time time);
+
     List<Reservation> findAllByCitizenAfm(String citizenAfm);
+
+    List<Reservation> findAllByCarId(Long carId);
 }

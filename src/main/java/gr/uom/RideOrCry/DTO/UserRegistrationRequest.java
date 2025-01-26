@@ -1,12 +1,10 @@
 package gr.uom.RideOrCry.DTO;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public abstract class UserRegistrationRequest {
     private String afm;
     private String email;
     private String name;
-    @JsonIgnore
     private String password;
 
     public UserRegistrationRequest() {

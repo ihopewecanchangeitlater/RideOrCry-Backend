@@ -4,6 +4,7 @@ import gr.uom.RideOrCry.DTO.Agency;
 import gr.uom.RideOrCry.DTO.Citizen;
 import gr.uom.RideOrCry.Entities.User;
 import gr.uom.RideOrCry.Enums.UserRole;
+import gr.uom.RideOrCry.Exceptions.NoRecordFoundException;
 import gr.uom.RideOrCry.Exceptions.UserAlreadyExistsException;
 import gr.uom.RideOrCry.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,6 @@ public class UserService {
     }
 
     public User getUserById(String userId) throws Exception {
-        return userRepository.findById(userId).orElseThrow(() -> new Exception(""));
+        return userRepository.findById(userId).orElseThrow(() -> new NoRecordFoundException("No user found"));
     }
 }

@@ -1,6 +1,7 @@
 package gr.uom.RideOrCry.Specifications;
 
 import gr.uom.RideOrCry.Entities.Car;
+import gr.uom.RideOrCry.Entities.User;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Join;
@@ -22,7 +23,7 @@ public class CarSpecification {
                     criteriaBuilder.lessThanOrEqualTo(root.get(key), value.toString());
             default -> {
                 if (key.equals("agency")) {
-                    Join<Agent, Car> agencyCars = root.join("agency");
+                    Join<User, Car> agencyCars = root.join("agency");
                     yield criteriaBuilder.equal(agencyCars.get("afm"), value);
                 }
                 yield criteriaBuilder.equal(root.get(key), value);
