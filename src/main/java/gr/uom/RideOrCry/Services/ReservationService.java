@@ -9,6 +9,7 @@ import gr.uom.RideOrCry.Exceptions.NoRecordFoundException;
 import gr.uom.RideOrCry.Repositories.ReservationRepository;
 import gr.uom.RideOrCry.Specifications.ReservationSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -48,7 +49,8 @@ public class ReservationService {
 
     public List<Reservation> getCarReservations(Long carId) throws Exception {
         Car _ = carService.getCarById(carId);
-        return reservationRepository.findAllByCarId(carId);
+        Sort sort = Sort.by(Sort.Order.asc("date"), Sort.Order.asc("time"));
+        return reservationRepository.findAllByCarId(carId, sort);
     }
 
     public Reservation deleteReservation(Long reservationId) {

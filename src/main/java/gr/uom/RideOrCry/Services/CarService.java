@@ -3,6 +3,7 @@ package gr.uom.RideOrCry.Services;
 import gr.uom.RideOrCry.Entities.Car;
 import gr.uom.RideOrCry.Entities.User;
 import gr.uom.RideOrCry.Exceptions.NoRecordFoundException;
+import gr.uom.RideOrCry.Exceptions.ZeroStockException;
 import gr.uom.RideOrCry.Repositories.AgencyRepository;
 import gr.uom.RideOrCry.Repositories.CarRepository;
 import gr.uom.RideOrCry.Specifications.CarSpecification;
@@ -81,8 +82,8 @@ public class CarService {
     }
 
     public Car buyCar(long carId) throws Exception {
-        Car car = carRepository.findById(carId).orElseThrow(() -> new NoRecordFoundException(""));
-        if (!car.hasStock()) throw new Exception("");
+        Car car = carRepository.findById(carId).orElseThrow(() -> new NoRecordFoundException("No car found"));
+        if (!car.hasStock()) throw new ZeroStockException("Requested car has no stock") ;
         car.buy();
         carRepository.saveAndFlush(car);
         return car;
