@@ -49,10 +49,29 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/auth/register/**", "/api/auth/login", "api/auth/logout").permitAll()
-                        .requestMatchers("/api/agencies/**").hasAuthority(UserRole.AGENCY.getAuthority())
-                        .requestMatchers("/api/citizens/**").hasAuthority(UserRole.CITIZEN.getAuthority())
-                        .requestMatchers("/api/cars/**", "/api/reservations/**").hasAnyAuthority(UserRole.AGENCY.getAuthority(), UserRole.CITIZEN.getAuthority())
+                        .requestMatchers(
+                                "/api-ui/**",
+                                "/api-docs/**",
+                                "/v3/api-docs/**",       // Fallback for default OpenAPI JSON path
+                                "/swagger-ui/**",        // Fallback for default Swagger UI path
+                                "/webjars/**",
+                                "/swagger-resources/**")
+                        .permitAll()
+                        .requestMatchers(
+                                "/api/auth/register/**",
+                                "/api/auth/login",
+                                "api/auth/logout")
+                        .permitAll()
+                        .requestMatchers("/api/agencies/**")
+                        .hasAuthority(UserRole.AGENCY.getAuthority())
+                        .requestMatchers("/api/citizens/**")
+                        .hasAuthority(UserRole.CITIZEN.getAuthority())
+                        .requestMatchers(
+                                "/api/cars/**",
+                                "/api/reservations/**")
+                        .hasAnyAuthority(
+                                UserRole.AGENCY.getAuthority(),
+                                UserRole.CITIZEN.getAuthority())
                         .anyRequest().authenticated())
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint))
