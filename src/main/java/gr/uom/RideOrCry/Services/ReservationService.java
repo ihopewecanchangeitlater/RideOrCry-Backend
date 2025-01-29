@@ -48,7 +48,7 @@ public class ReservationService {
     }
 
     public List<Reservation> getCarReservations(Long carId) throws Exception {
-        Car _ = carService.getCarById(carId);
+        carService.getCarById(carId);
         Sort sort = Sort.by(Sort.Order.asc("date"), Sort.Order.asc("time"));
         return reservationRepository.findAllByCarId(carId, sort);
     }
