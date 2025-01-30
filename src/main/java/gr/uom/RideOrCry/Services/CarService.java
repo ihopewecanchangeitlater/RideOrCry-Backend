@@ -23,6 +23,10 @@ public class CarService {
     @Autowired
     private AgencyRepository agencyRepository;
 
+    public void checkStock(Car car) {
+        if (!car.hasStock()) throw new ZeroStockException("No car found");
+    }
+
     // Μέθοδος προσθήκης αμαξιού.
     // Βρίσκει το όνομα του agent και θέτει στο αμάξι το όνομα του agent πριν το αποθηκεύσει στην βάση
     public Car addCar(Car car, String agencyAfm) throws Exception {
@@ -83,7 +87,7 @@ public class CarService {
 
     public Car buyCar(long carId) throws Exception {
         Car car = carRepository.findById(carId).orElseThrow(() -> new NoRecordFoundException("No car found"));
-        if (!car.hasStock()) throw new ZeroStockException("Requested car has no stock") ;
+        checkStock(car);
         car.buy();
         carRepository.saveAndFlush(car);
         return car;
