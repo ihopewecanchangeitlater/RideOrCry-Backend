@@ -5,6 +5,7 @@ import gr.uom.RideOrCry.Entities.Car;
 import gr.uom.RideOrCry.Entities.Reservation;
 import gr.uom.RideOrCry.Entities.User;
 import gr.uom.RideOrCry.Enums.UserRole;
+import gr.uom.RideOrCry.Exceptions.NoCarForTestDriveException;
 import gr.uom.RideOrCry.Exceptions.NoRecordFoundException;
 import gr.uom.RideOrCry.Repositories.ReservationRepository;
 import gr.uom.RideOrCry.Specifications.ReservationSpecification;
@@ -29,6 +30,9 @@ public class ReservationService {
 
     public Reservation createReservation(ReservationRequest reservationRequest) throws Exception {
         Car car = carService.getCarById(reservationRequest.getCarId());
+        carService.checkStock(car);
+        List<Reservation> carReservations = reservationRepository.findAllByCitizenAfmAndCarIdAndDate(reservationRequest.getCitizenId(), reservationRequest.getCarId(), reservationRequest.getDate());
+        if (!car.isStockGT(carReservations.size())) throw new NoCarForTestDriveException("No available cars for test drive");
         User citizen = citizenService.getCitizen(reservationRequest.getCitizenId());
         Reservation reservation = new Reservation(citizen, car, reservationRequest.getDate(), reservationRequest.getTime());
         reservationRepository.saveAndFlush(reservation);

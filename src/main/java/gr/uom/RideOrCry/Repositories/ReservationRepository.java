@@ -14,9 +14,12 @@ import java.util.List;
 public interface ReservationRepository extends JpaRepository<Reservation, Long>, JpaSpecificationExecutor<Reservation> {
     List<Reservation> findAllByCitizenAfmAndCarIdAndDateAndTime(String citizenAfm, long carId, Date date, Time time);
 
+    List<Reservation> findAllByCitizenAfmAndCarIdAndDate(String citizenId, long carId, Date date);
+
     List<Reservation> findAllByCitizenAfm(String citizenAfm);
 
     List<Reservation> findAllByCarId(Long carId);
 
     List<Reservation> findAllByCarId(Long carId, Sort sort);
+
 }
