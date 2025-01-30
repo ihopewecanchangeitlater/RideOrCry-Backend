@@ -60,7 +60,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NoRecordFoundException.class)
     public ResponseEntity<ErrorResponse> handleNoRecordFoundException(NoRecordFoundException ex, WebRequest request) {
         ErrorResponse errorResponse = new ErrorResponse(ex.getMessage(), request.getDescription(false));
-        return new ResponseEntity<>(errorResponse, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NoCarForTestDriveException.class)
+    public ResponseEntity<ErrorResponse> handleNoCarForTestDriveException(NoCarForTestDriveException ex, WebRequest request) {
+        ErrorResponse errorResponse = new ErrorResponse(ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ZeroStockException.class)
