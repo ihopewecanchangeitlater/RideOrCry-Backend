@@ -2,7 +2,6 @@ version: "3"
 services:
   database:
     image: "postgres:16.4-alpine"
-    container_name: "RideOrCry-DB"
     environment:
       POSTGRES_DB: ride_or_cry_db
       POSTGRES_PASSWORD: password
@@ -15,7 +14,6 @@ services:
   spring-boot:
     build:
       context: .
-    container_name: "RideOrCry-SERVER"
     depends_on:
       - database
     environment:
