@@ -51,27 +51,27 @@ public class SecurityConfig {
                                 "/webjars/**",
                                 "/swagger-resources/**")
                         .permitAll()
-//                        .requestMatchers(
-//                                "/api/auth/register/**",
-//                                "/api/auth/login",
-//                                "api/auth/logout")
-//                        .permitAll()
-//                        .requestMatchers("/api/agencies/**")
-//                        .hasAuthority(UserRole.AGENCY.getAuthority())
-//                        .requestMatchers("/api/citizens/**")
-//                        .hasAuthority(UserRole.CITIZEN.getAuthority())
-//                        .requestMatchers(
-//                                "/api/cars/**",
-//                                "/api/reservations/**")
-//                        .hasAnyAuthority(
-//                                UserRole.AGENCY.getAuthority(),
-//                                UserRole.CITIZEN.getAuthority())
+                        .requestMatchers(
+                                "/api/auth/register/**",
+                                "/api/auth/login",
+                                "api/auth/logout")
+                        .permitAll()
+                        .requestMatchers("/api/agencies/**")
+                        .hasAuthority(UserRole.AGENCY.getAuthority())
+                        .requestMatchers("/api/citizens/**")
+                        .hasAuthority(UserRole.CITIZEN.getAuthority())
+                        .requestMatchers(
+                                "/api/cars/**",
+                                "/api/reservations/**")
+                        .hasAnyAuthority(
+                                UserRole.AGENCY.getAuthority(),
+                                UserRole.CITIZEN.getAuthority())
                         .anyRequest().authenticated())
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint))
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-//        http.addFilterBefore(jwtRequestFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtRequestFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
